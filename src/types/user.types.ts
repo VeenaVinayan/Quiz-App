@@ -1,6 +1,9 @@
-export type IUser ={
-    username:string;
+import { Document } from 'mongoose';
+
+export interface IUser extends Document  {
+    name:string;
     email:string;
-    phone:number;
+    phone:string;
     password:string;
 }
+
