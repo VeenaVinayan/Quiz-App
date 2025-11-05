@@ -1,31 +1,11 @@
-// import express ,{ Request ,Response}  from 'express';
-// import  connectDB  from './config/dbConfig';
-// import dotenv from 'dotenv';
-// import authRoute from './routes/authRoute';
-// import cors from 'cors';
-// import { errorHandler } from './middlewares/error';
-
-// dotenv.config();
-// const app = express();
-// const port = process.env.PORT || 7002;
-
-// connectDB();
-// app.use(cors({
-//     origin:'http://localhost:5001',
-//     credentials:true,
-// }))
-
-// app.use('/api/auth',authRoute);
-
-// app.use(errorHandler);
-
-// app.listen(port,() => console.log('Server Started !!'));
 import express, { Request, Response, NextFunction } from 'express';
 import connectDB from './config/dbConfig';
 import dotenv from 'dotenv';
 import authRoute from './routes/authRoute';
 import cors from 'cors';
 import { errorHandler } from './middlewares/error';
+import  questionRoute  from './routes/questionRoute';
+import quizRoute from './routes/quizRoute';
 
 dotenv.config();
 const app = express();
@@ -47,8 +27,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 
 app.use('/api/auth', authRoute);
+app.use('/api/question',questionRoute);
+app.use('/api/user',quizRoute);
 
 app.use(errorHandler);
-
 
 app.listen(port, () => console.log(`🚀 Server running on port ${port}`));

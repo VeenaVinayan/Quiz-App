@@ -41,7 +41,7 @@ export class AuthService implements IAuthService{
        const accessToken = generateAccessToken(payload);
        const refreshToken = generateRefreshToken(payload);
        const loginData : TLoginResponse = {
-          userData :{ ...plainToInstance(LoginResponseDto,userData,{
+          user :{ ...plainToInstance(LoginResponseDto,userData,{
                     excludeExtraneousValues : true })},
           accessToken : accessToken ?? "",
           refreshToken : refreshToken ?? "",          

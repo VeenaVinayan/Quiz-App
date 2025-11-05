@@ -1,9 +1,8 @@
 import { IAuthService } from '../Interfaces/Auth/IAuthService';
 import { inject , injectable } from 'inversify';
-import { NextFunction } from 'express';
 import { STATUS_CODE } from '../Constants/HttpStatusCode';
 import { MESSAGES } from '../Constants/messages';
-import { Request , Response } from 'express';
+import { Request , Response ,NextFunction} from 'express';
 
 @injectable()
 export class AuthController{
@@ -17,7 +16,7 @@ export class AuthController{
              const  registerResponse = await this._authservice.register(req.body);
              console.log('Register Response ::',registerResponse);
              if(registerResponse){
-                 res.status(201).json({success:true,message:MESSAGES.CREATED})
+                 res.status(STATUS_CODE.CREATED).json({success:true,message:MESSAGES.CREATED})
              }else{
                 res.status(STATUS_CODE.FORBIDDEN).json({success:false,message:MESSAGES.ERROR})
              }
@@ -44,7 +43,7 @@ export class AuthController{
             next(err);
         }
     }
-      getAccessToken = async(req: Request, res:Response,next: NextFunction) =>{
+     getAccessToken = async(req: Request, res:Response,next: NextFunction) =>{
         try{
         if(!req.cookies || !req.cookies.token){
             res.status(STATUS_CODE.BAD_REQUEST).json({message:MESSAGES.SUCCESS});
@@ -55,7 +54,7 @@ export class AuthController{
         if(accessToken){ 
              res.status(STATUS_CODE.OK).json({success:true,accessToken});
         }else{
-            res.status(STATUS_CODE.UNAUTHORIZED).json({success:false,message:MESSAGES.REFRESH_TOKEN_EXPIRED});
+            res.status(STATUS_CODE.UNAUTHORIZED).json({success:false,message:MESSAGES.REFRESH_TOKEN_EXPIRD});
         }     
         }catch(err){
             next(err)

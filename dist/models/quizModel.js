@@ -32,24 +32,26 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Quiz = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const UserSchema = new mongoose_1.Schema({
-    name: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true },
-    phone: { type: String, required: true },
-    password: { type: String, required: true },
-});
-UserSchema.pre("save", async function (next) {
-    if (!this.isModified("password"))
-        return next();
-    const salt = await bcrypt_1.default.genSalt(10);
-    this.password = await bcrypt_1.default.hash(this.password, salt);
-    next();
-});
-exports.User = mongoose_1.default.model("User", UserSchema);
+const QuizSchema = new mongoose_1.Schema({
+    userId: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    questions: {
+        type: [String],
+        required: true,
+    },
+    score: {
+        type: Number,
+        required: true,
+    },
+    totalScore: {
+        type: Number,
+        required: true,
+    }
+}, { timestamps: true });
+exports.Quiz = mongoose_1.default.model("Quiz", QuizSchema);

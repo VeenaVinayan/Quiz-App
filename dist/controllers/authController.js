@@ -25,7 +25,7 @@ let AuthController = class AuthController {
                 const registerResponse = await this._authservice.register(req.body);
                 console.log('Register Response ::', registerResponse);
                 if (registerResponse) {
-                    res.status(201).json({ success: true, message: messages_1.MESSAGES.CREATED });
+                    res.status(HttpStatusCode_1.STATUS_CODE.CREATED).json({ success: true, message: messages_1.MESSAGES.CREATED });
                 }
                 else {
                     res.status(HttpStatusCode_1.STATUS_CODE.FORBIDDEN).json({ success: false, message: messages_1.MESSAGES.ERROR });
@@ -56,6 +56,25 @@ let AuthController = class AuthController {
                 next(err);
             }
         };
+        this.getAccessToken = async (req, res, next) => {
+            try {
+                if (!req.cookies || !req.cookies.token) {
+                    res.status(HttpStatusCode_1.STATUS_CODE.BAD_REQUEST).json({ message: messages_1.MESSAGES.SUCCESS });
+                    return;
+                }
+                const refreshToken = req.cookies.token;
+                const accessToken = await this._authservice.getAccessToken(refreshToken);
+                if (accessToken) {
+                    res.status(HttpStatusCode_1.STATUS_CODE.OK).json({ success: true, accessToken });
+                }
+                else {
+                    res.status(HttpStatusCode_1.STATUS_CODE.UNAUTHORIZED).json({ success: false, message: messages_1.MESSAGES.REFRESH_TOKEN_EXPIRD });
+                }
+            }
+            catch (err) {
+                next(err);
+            }
+        };
         this.logout = async (req, res, next) => {
             try {
                 res.clearCookie('token', {
@@ -63,7 +82,7 @@ let AuthController = class AuthController {
                     secure: true,
                     sameSite: "strict"
                 });
-                res.status(HttpStatusCode_1.STATUS_CODE.OK).json({ message: messages_1.MESSAGES.LOGOUT_SUCCESS });
+                res.status(HttpStatusCode_1.STATUS_CODE.OK).json({ success: true, message: messages_1.MESSAGES.LOGOUT_SUCCESS });
             }
             catch (err) {
                 next(err);

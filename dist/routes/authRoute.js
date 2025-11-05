@@ -12,4 +12,5 @@ const router = express_1.default.Router();
 const authController = config_1.container.get('AuthController');
 router.post('/signup', (0, validateDto_1.validateDto)(registerDTO_1.RegisterRequestDto), authController.register);
 router.post('/login', (0, validateDto_1.validateDto)(loginDto_1.LoginDto), authController.login);
+router.post('/refresh', authController.getAccessToken);
 exports.default = router;

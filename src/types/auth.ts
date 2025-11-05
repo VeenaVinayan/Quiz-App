@@ -7,12 +7,11 @@ export type TUserData = {
    email:string;
    password:string;
 }
-
 export type TokenPayload = {
     id:string;
 }
 export type TLoginResponse = {
-   userData: LoginResponseDto;
+   user: LoginResponseDto;
    accessToken: string;
    refreshToken: string;
 }

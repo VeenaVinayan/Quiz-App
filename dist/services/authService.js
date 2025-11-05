@@ -37,6 +37,9 @@ let AuthService = class AuthService {
                 return false;
         }
     }
+    async getAccessToken(token) {
+        return (0, jwt_1.verifyRefreshToken)(token);
+    }
     async login(loginData) {
         const userData = await this._authRepository.isUserExist(loginData.email);
         console.log('User Data ::', userData);
@@ -52,7 +55,7 @@ let AuthService = class AuthService {
             const accessToken = (0, jwt_1.generateAccessToken)(payload);
             const refreshToken = (0, jwt_1.generateRefreshToken)(payload);
             const loginData = {
-                userData: { ...(0, class_transformer_1.plainToInstance)(LoginResponseDto_1.LoginResponseDto, userData, {
+                user: { ...(0, class_transformer_1.plainToInstance)(LoginResponseDto_1.LoginResponseDto, userData, {
                         excludeExtraneousValues: true
                     }) },
                 accessToken: accessToken ?? "",

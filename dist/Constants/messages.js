@@ -7,5 +7,7 @@ exports.MESSAGES = {
     ERROR: 'Error occured !',
     LOGIN_SUCCESS: "Login successfully",
     LOGIN_FAILED: "Login Failed ",
-    LOGOUT_SUCCESS: "Logout successfully"
+    LOGOUT_SUCCESS: "Logout successfully",
+    REFRESH_TOKEN_EXPIRD: "Refresh Token Expired",
+    UNAUTHORIZED: "Unauthorized access",
 };

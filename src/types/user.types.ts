@@ -7,3 +7,7 @@ export interface IUser extends Document  {
     password:string;
 }
 
+export interface IResponsePayload {
+    success :boolean;
+    message:string;
+}
