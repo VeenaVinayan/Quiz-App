@@ -1,13 +1,12 @@
-import { IsString, IsArray, ArrayMinSize, IsNumber, IsDefined } from 'class-validator';
+import { IsArray, ArrayMinSize, IsNumber, IsDefined } from 'class-validator';
 import { Expose , Transform } from 'class-transformer';
 import mongoose from 'mongoose' ;
 
 export class QuizSaveDto {
   @Expose()
-  @IsString()
   @IsDefined({ message: 'User ID Required!' })
-  @Transform(({ value }) => new mongoose.Schema.Types.ObjectId(value))
-  userId!: mongoose.Schema.Types.ObjectId;
+  @Transform(({ value }) => new mongoose.Types.ObjectId(value))
+  userId!: mongoose.Types.ObjectId;
 
   @Expose()
   @IsArray()

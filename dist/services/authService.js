@@ -42,7 +42,6 @@ let AuthService = class AuthService {
     }
     async login(loginData) {
         const userData = await this._authRepository.isUserExist(loginData.email);
-        console.log('User Data ::', userData);
         if (!userData)
             return null;
         const isVerified = await bcrypt_1.default.compare(loginData.password, userData.password);

@@ -5,6 +5,8 @@ import { Request , Response ,NextFunction} from 'express';
 import { IQuestionService } from '../Interfaces/Question/IQuestionService';
 import { questionMapper  } from '../Mapper/addQuestions';
 import { AddQuestionDto } from '../DTO/Request/Question/addQuestionDto';
+import { TQuestionResult } from '../types/questions.types';
+import { QuestionDto } from '../DTO/Response/GetQuestionDto';
 
 @injectable()
 export class QuestionController{
@@ -25,14 +27,48 @@ export class QuestionController{
     }
     getQuestions = async(req : Request,res : Response, next: NextFunction) =>{
         try{
-             const questions = await this._questionService.getQuestions();
-             if(questions){
-                 res.status(STATUS_CODE.OK).json({success: true,data:questions});
+             const { page, perPage } = req.params;
+             if(!page || !perPage){
+                 res.send(STATUS_CODE.BAD_REQUEST).json({message:MESSAGES.MISSING_FIELDS});
+                 return;
+             }
+             const questionResult : TQuestionResult<QuestionDto>= await this._questionService.getQuestions(Number(page),Number(perPage));
+             if(questionResult){
+                 res.status(STATUS_CODE.OK).json({success: true,data:questionResult});
              }else{
                  res.status(STATUS_CODE.BAD_REQUEST).json({success:false,message:MESSAGES.ERROR});
              }   
         }catch(err){
             next(err);
         }
+    }
+    deleteQuestion = async(req: Request, res: Response, next : NextFunction) =>{
+        try{
+                const {questionId } = req.params;
+                if(!questionId){
+                    res.status(STATUS_CODE.BAD_REQUEST).json({message:MESSAGES.MISSING_FIELDS});
+                } 
+                const response = await this._questionService.deleteQuestion(questionId);
+                if(response){
+                    res.status(STATUS_CODE.OK).json({message:MESSAGES.SUCCESS});
+                }else{
+                    res.status(STATUS_CODE.BAD_REQUEST).json({message:MESSAGES.ERROR});
+                }
+        }catch(err){
+            next(err);
+        }
+    }
+    updateQuestion = async(req: Request, res: Response, next: NextFunction) =>{
+         try{
+                const response = await this._questionService.updateQuestion(req.body);
+                if(response){
+                    res.status(STATUS_CODE.OK).json({success:true});
+                }else{
+                    res.status(STATUS_CODE.BAD_REQUEST).json({success:false});
+                }
+         }catch(err){
+            console.log("Error in update Question ::",err);
+            next(err);
+         }
     }
 }

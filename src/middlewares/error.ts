@@ -7,7 +7,6 @@ interface ErrorResponse {
   message: string;
   stack?: string;
 }
-
 export const errorHandler = (
   err: any,
   req: Request,
@@ -15,7 +14,6 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   console.error(err); 
-
   let customError = err;
 
     if (!(err instanceof ApiError)) {
@@ -25,12 +23,10 @@ export const errorHandler = (
       false
     );
   }
-
   const response: ErrorResponse = {
     status: customError.statusCode >= 500 ? "error" : "fail",
     message: customError.message,
     ...(process.env.NODE_ENV === "development" && { stack: customError.stack }),
   };
-
   res.status(customError.statusCode).json(response);
 };

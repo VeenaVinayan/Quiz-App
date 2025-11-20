@@ -1,7 +1,7 @@
 import mongoose , { Schema } from 'mongoose';
 
 export interface IQuiz extends Document {
-    userId:Schema.Types.ObjectId;
+    userId:mongoose.Types.ObjectId;
     questions:string[];
     score:number;
     totalScore:number;

@@ -27,12 +27,38 @@ let QuestionService = class QuestionService {
         else
             return false;
     }
-    async getQuestions() {
-        const questions = await this._questionRepository.getQuestions();
-        const questionDto = questions.map((question) => (0, class_transformer_1.plainToInstance)(GetQuestionDto_1.QuestionDto, question, {
+    async getQuestions(page, perPage) {
+        const result = await this._questionRepository.getQuestions(page, perPage);
+        const questionDto = result.questions.map((question) => (0, class_transformer_1.plainToInstance)(GetQuestionDto_1.QuestionDto, question, {
             excludeExtraneousValues: true
         }));
-        return questionDto;
+        const questionDtoResult = {
+            questions: questionDto,
+            totalCount: result.totalCount
+        };
+        return questionDtoResult;
+    }
+    async deleteQuestion(questionId) {
+        const deleteResult = await this._questionRepository.deleteResource(questionId);
+        if (deleteResult.acknowledged) {
+            return true;
+        }
+        else
+            return false;
+    }
+    async updateQuestion(data) {
+        const updateData = {
+            question: data.question,
+            type: data.type,
+            options: data?.options,
+            answer: data.answer,
+            score: data.score,
+        };
+        const updateResult = await this._questionRepository.updateResource(data.id, updateData);
+        if (updateResult.modifiedCount === 1)
+            return true;
+        else
+            return false;
     }
 };
 exports.QuestionService = QuestionService;

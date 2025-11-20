@@ -11,4 +11,6 @@ const auth_1 = require("../middlewares/auth");
 const quizController = config_1.container.get('QuizController');
 const router = express_1.default.Router();
 router.post('/quiz', auth_1.auth, (0, validateDto_1.validateDto)(QuizSaveRequestDto_1.QuizSaveDto), quizController.saveQuiz);
+router.get('/quiz/history/:userId', auth_1.auth, quizController.getQuizHistory);
+router.get('/quiz', auth_1.auth, quizController.getQuizQuestions);
 exports.default = router;

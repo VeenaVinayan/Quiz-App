@@ -1,7 +1,7 @@
 import { Question, IQuestion } from '../models/questionModel';
 import { BaseRepository } from './baseRepository';
 import { IQuestionRepository } from '../Interfaces/Question/IQuestionRepository';
-import { TQuestion } from '../types/questions.types';
+import { TQuestionResult , TQuestion} from '../types/questions.types';
 
 export class QuestionRepository extends BaseRepository<IQuestion> implements IQuestionRepository{
     constructor(){
@@ -9,8 +9,15 @@ export class QuestionRepository extends BaseRepository<IQuestion> implements IQu
     }
     private readonly _questionModel = Question;
 
-    async getQuestions():Promise<TQuestion []>{
-        const questions = await this._questionModel.find().limit(10).lean();
-        return questions;
+    async getQuestions(page: number, perPage : number):Promise<TQuestionResult<TQuestion>>{
+        const [questions , totalCount ] = await Promise.all([
+                        this._questionModel.find().skip((page-1)*perPage).limit(perPage).lean(),
+                        this._questionModel.countDocuments()
+        ]);
+        const questionResult:TQuestionResult<TQuestion>={
+             questions,
+             totalCount,
+        }
+        return {questions,totalCount };
     }
 }

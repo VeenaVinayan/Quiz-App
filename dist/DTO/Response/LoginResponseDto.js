@@ -31,3 +31,7 @@ __decorate([
     (0, class_transformer_1.Expose)(),
     __metadata("design:type", String)
 ], LoginResponseDto.prototype, "email", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    __metadata("design:type", Boolean)
+], LoginResponseDto.prototype, "isAdmin", void 0);

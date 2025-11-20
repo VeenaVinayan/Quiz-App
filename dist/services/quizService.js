@@ -14,6 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuizService = void 0;
 const inversify_1 = require("inversify");
+const class_transformer_1 = require("class-transformer");
+const GetQuestionDto_1 = require("../DTO/Response/GetQuestionDto");
 let QuizService = class QuizService {
     constructor(_quizRepository) {
         this._quizRepository = _quizRepository;
@@ -24,6 +26,17 @@ let QuizService = class QuizService {
             return true;
         else
             return false;
+    }
+    async getQuizHistory(userId) {
+        const quizData = await this._quizRepository.getQuizHistory(userId);
+        return quizData;
+    }
+    async getQuizQuestions() {
+        const questions = await this._quizRepository.getQuizQuestion();
+        const questionDto = questions.map((question) => (0, class_transformer_1.plainToInstance)(GetQuestionDto_1.QuestionDto, question, {
+            excludeExtraneousValues: true
+        }));
+        return questionDto;
     }
 };
 exports.QuizService = QuizService;

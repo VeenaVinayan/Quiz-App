@@ -21,10 +21,9 @@ class QuizSaveDto {
 exports.QuizSaveDto = QuizSaveDto;
 __decorate([
     (0, class_transformer_1.Expose)(),
-    (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsDefined)({ message: 'User ID Required!' }),
-    (0, class_transformer_1.Transform)(({ value }) => new mongoose_1.default.Schema.Types.ObjectId(value)),
-    __metadata("design:type", mongoose_1.default.Schema.Types.ObjectId)
+    (0, class_transformer_1.Transform)(({ value }) => new mongoose_1.default.Types.ObjectId(value)),
+    __metadata("design:type", mongoose_1.default.Types.ObjectId)
 ], QuizSaveDto.prototype, "userId", void 0);
 __decorate([
     (0, class_transformer_1.Expose)(),

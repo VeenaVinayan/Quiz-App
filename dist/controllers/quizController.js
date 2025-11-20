@@ -34,6 +34,39 @@ let QuizController = class QuizController {
                 next(err);
             }
         };
+        this.getQuizHistory = async (req, res, next) => {
+            try {
+                console.log("Get Quiz History !!");
+                const { userId } = req.params;
+                if (!userId)
+                    return res.status(HttpStatusCode_1.STATUS_CODE.BAD_REQUEST).json({ message: messages_1.MESSAGES.ERROR });
+                const quizData = await this._quizService.getQuizHistory(userId);
+                if (quizData) {
+                    res.status(HttpStatusCode_1.STATUS_CODE.OK).json({ success: true, quizData });
+                }
+                else {
+                    res.status(HttpStatusCode_1.STATUS_CODE.NO_CONTENT).json({ success: true });
+                }
+            }
+            catch (err) {
+                console.log(err);
+                next(err);
+            }
+        };
+        this.getQuizQuestions = async (req, res, next) => {
+            try {
+                const questions = await this._quizService.getQuizQuestions();
+                if (questions) {
+                    res.status(HttpStatusCode_1.STATUS_CODE.OK).json({ success: true, questions });
+                }
+                else {
+                    res.status(HttpStatusCode_1.STATUS_CODE.BAD_REQUEST).json({ success: true, message: messages_1.MESSAGES.ERROR });
+                }
+            }
+            catch (err) {
+                next(err);
+            }
+        };
     }
 };
 exports.QuizController = QuizController;

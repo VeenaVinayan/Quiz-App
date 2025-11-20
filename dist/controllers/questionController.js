@@ -34,15 +34,53 @@ let QuestionController = class QuestionController {
         };
         this.getQuestions = async (req, res, next) => {
             try {
-                const questions = await this._questionService.getQuestions();
-                if (questions) {
-                    res.status(HttpStatusCode_1.STATUS_CODE.OK).json({ success: true, data: questions });
+                const { page, perPage } = req.params;
+                if (!page || !perPage) {
+                    res.send(HttpStatusCode_1.STATUS_CODE.BAD_REQUEST).json({ message: messages_1.MESSAGES.MISSING_FIELDS });
+                    return;
+                }
+                const questionResult = await this._questionService.getQuestions(Number(page), Number(perPage));
+                if (questionResult) {
+                    res.status(HttpStatusCode_1.STATUS_CODE.OK).json({ success: true, data: questionResult });
                 }
                 else {
                     res.status(HttpStatusCode_1.STATUS_CODE.BAD_REQUEST).json({ success: false, message: messages_1.MESSAGES.ERROR });
                 }
             }
             catch (err) {
+                next(err);
+            }
+        };
+        this.deleteQuestion = async (req, res, next) => {
+            try {
+                const { questionId } = req.params;
+                if (!questionId) {
+                    res.status(HttpStatusCode_1.STATUS_CODE.BAD_REQUEST).json({ message: messages_1.MESSAGES.MISSING_FIELDS });
+                }
+                const response = await this._questionService.deleteQuestion(questionId);
+                if (response) {
+                    res.status(HttpStatusCode_1.STATUS_CODE.OK).json({ message: messages_1.MESSAGES.SUCCESS });
+                }
+                else {
+                    res.status(HttpStatusCode_1.STATUS_CODE.BAD_REQUEST).json({ message: messages_1.MESSAGES.ERROR });
+                }
+            }
+            catch (err) {
+                next(err);
+            }
+        };
+        this.updateQuestion = async (req, res, next) => {
+            try {
+                const response = await this._questionService.updateQuestion(req.body);
+                if (response) {
+                    res.status(HttpStatusCode_1.STATUS_CODE.OK).json({ success: true });
+                }
+                else {
+                    res.status(HttpStatusCode_1.STATUS_CODE.BAD_REQUEST).json({ success: false });
+                }
+            }
+            catch (err) {
+                console.log("Error in update Question ::", err);
                 next(err);
             }
         };

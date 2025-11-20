@@ -30,7 +30,6 @@ export class AuthService implements IAuthService{
         
   async login(loginData:LoginDto) :Promise<TLoginResponse | null>{
      const userData : TUserData | null = await this._authRepository.isUserExist(loginData.email);
-     console.log('User Data ::',userData);
      if(!userData) return null;
      const isVerified = await bcrypt.compare(loginData.password,userData.password);
      if(!isVerified || ! userData) return null;

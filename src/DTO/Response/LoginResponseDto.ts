@@ -14,4 +14,7 @@ export class LoginResponseDto{
 
     @Expose()
     email!:string;
+
+    @Expose()
+    isAdmin!:boolean;
 }

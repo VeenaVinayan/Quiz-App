@@ -8,9 +8,16 @@ class QuestionRepository extends baseRepository_1.BaseRepository {
         super(questionModel_1.Question);
         this._questionModel = questionModel_1.Question;
     }
-    async getQuestions() {
-        const questions = await this._questionModel.find().limit(10).lean();
-        return questions;
+    async getQuestions(page, perPage) {
+        const [questions, totalCount] = await Promise.all([
+            this._questionModel.find().skip((page - 1) * perPage).limit(perPage).lean(),
+            this._questionModel.countDocuments()
+        ]);
+        const questionResult = {
+            questions,
+            totalCount,
+        };
+        return { questions, totalCount };
     }
 }
 exports.QuestionRepository = QuestionRepository;

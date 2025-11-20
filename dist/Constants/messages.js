@@ -10,4 +10,5 @@ exports.MESSAGES = {
     LOGOUT_SUCCESS: "Logout successfully",
     REFRESH_TOKEN_EXPIRD: "Refresh Token Expired",
     UNAUTHORIZED: "Unauthorized access",
+    MISSING_FIELDS: "Missing required Fields !",
 };

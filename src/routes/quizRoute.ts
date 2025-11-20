@@ -9,5 +9,7 @@ const quizController = container.get<QuizController>('QuizController');
 const router = express.Router();
 
 router.post('/quiz',auth,validateDto(QuizSaveDto),quizController.saveQuiz);
+router.get('/quiz/history/:userId',auth,quizController.getQuizHistory); 
+router.get('/quiz',auth,quizController.getQuizQuestions);
 
 export default router;
