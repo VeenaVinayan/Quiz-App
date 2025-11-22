@@ -14,7 +14,7 @@ const port = process.env.PORT || 7002;
 connectDB();
 
 app.use(cors({
-  origin: 'http://localhost:5001',
+  origin: process.env.CLIENT_URL,
   credentials: true,
 }));
 

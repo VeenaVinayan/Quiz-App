@@ -15,7 +15,7 @@ class QuizRepository extends baseRepository_1.BaseRepository {
         const quizData = await this._quizModel.aggregate([
             { $match: { userId: new mongoose_1.Types.ObjectId(userId) } },
             { $sort: { createdAt: -1 } },
-            { $limit: 5 },
+            { $limit: 10 },
             { $project: { userId: 1, score: 1, totalScore: 1, createdAt: 1 } }
         ]);
         return quizData;

@@ -16,7 +16,7 @@ const app = (0, express_1.default)();
 const port = process.env.PORT || 7002;
 (0, dbConfig_1.default)();
 app.use((0, cors_1.default)({
-    origin: 'http://localhost:5001',
+    origin: process.env.CLIENT_URL,
     credentials: true,
 }));
 app.use(express_1.default.json());

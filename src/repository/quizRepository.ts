@@ -17,7 +17,7 @@ export class QuizRepository extends BaseRepository<IQuiz> implements IQuizReposi
         const quizData : TQuiz[] = await this._quizModel.aggregate([
             {$match: {userId: new Types.ObjectId(userId)}},
             {$sort: {createdAt:-1}},
-            {$limit:5},
+            {$limit:10},
             {$project:{userId:1,score:1,totalScore:1,createdAt:1}}
         ]);
          return quizData;
